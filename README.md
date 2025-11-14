@@ -53,6 +53,7 @@
 <body>
   <h2>Trigger Travel Risk Report</h2>
   <form id="travelForm">
+
     <label>Destination:
       <input type="text" name="destination" required>
     </label>
@@ -71,6 +72,15 @@
 
     <label>Hotel:
       <input type="text" name="hotel">
+    </label>
+
+    <!-- New date pickers -->
+    <label>Date From:
+      <input type="date" name="dateFrom" required>
+    </label>
+
+    <label>Date To:
+      <input type="date" name="dateTo" required>
     </label>
 
     <button type="submit">Submit</button>
