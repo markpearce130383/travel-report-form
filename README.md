@@ -3,113 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <title>Travel Risk Report Form</title>
-
   <style>
+    /* Root variables for light & dark mode */
+    :root {
+      --bg-color: #f7f7f7;
+      --card-bg: #fff;
+      --text-color: #333;
+      --input-bg: #fff;
+      --input-border: #ccc;
+      --btn-bg: #2ecc71;
+      --btn-hover: #27ae60;
+    }
+    body.dark-mode {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #eee;
+      --input-bg: #2c2c2c;
+      --input-border: #555;
+      --btn-bg: #4caf50;
+      --btn-hover: #43a047;
+    }
+
     body {
       font-family: Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
       padding: 20px;
-      background: #f7f7f7;
+      transition: background 0.3s, color 0.3s;
     }
 
     h2 {
-      color: #333;
       text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .toggle-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button.toggle-mode {
+      background: #444;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    button.toggle-mode:hover {
+      background: #555;
     }
 
     form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 500px;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 600px;
       margin: 0 auto;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: background 0.3s;
     }
 
-    label {
-      display: block;
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
       margin-bottom: 10px;
       font-weight: bold;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 4px;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .row label {
+      flex: 1 1 45%;
+      display: flex;
+      flex-direction: column;
     }
 
     input {
-      width: 100%;
       padding: 8px;
       margin-top: 4px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      background: var(--input-bg);
+      color: var(--text-color);
+      transition: border 0.3s, background 0.3s, color 0.3s;
+    }
+    input:focus {
+      border-color: var(--btn-bg);
+      outline: none;
     }
 
-    button {
+    button.submit-btn {
+      width: 100%;
       padding: 12px;
       font-size: 16px;
-      width: 100%;
-      background-color: #2ecc71;
+      background-color: var(--btn-bg);
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: background 0.3s;
     }
-
-    button:hover {
-      background-color: #27ae60;
+    button.submit-btn:hover {
+      background-color: var(--btn-hover);
     }
 
     #response {
-      margin-top: 15px;
       text-align: center;
+      margin-top: 15px;
       font-weight: bold;
     }
+
+    /* Small screens adjustments */
+    @media(max-width: 500px){
+      .row label {
+        flex: 1 1 100%;
+      }
+    }
+
   </style>
 </head>
-
 <body>
 
-  <h2>Trigger Travel Risk Report</h2>
+  <h2>Travel Risk Report</h2>
+
+  <div class="toggle-container">
+    <button class="toggle-mode">Toggle Dark Mode</button>
+  </div>
 
   <form id="travelForm">
+    <!-- Destination Section -->
+    <div class="section">
+      <h3>Location Info</h3>
+      <label>Destination:
+        <input type="text" name="destination" required>
+      </label>
+    </div>
 
-    <label>Destination:
-      <input type="text" name="destination" required>
-    </label>
+    <!-- Transport Section -->
+    <div class="section">
+      <h3>Transport</h3>
+      <div class="row">
+        <label>Airport:
+          <input type="text" name="airport">
+        </label>
+        <label>Train Station:
+          <input type="text" name="trainStation">
+        </label>
+        <label>Bus Station:
+          <input type="text" name="busStation">
+        </label>
+      </div>
+    </div>
 
-    <label>Airport:
-      <input type="text" name="airport">
-    </label>
+    <!-- Accommodation Section -->
+    <div class="section">
+      <h3>Accommodation</h3>
+      <label>Hotel:
+        <input type="text" name="hotel">
+      </label>
+    </div>
 
-    <label>Train Station:
-      <input type="text" name="trainStation">
-    </label>
+    <!-- Dates Section -->
+    <div class="section">
+      <h3>Travel Dates</h3>
+      <div class="row">
+        <label>Date From:
+          <input type="date" name="dateFrom" id="dateFrom" required>
+        </label>
+        <label>Date To:
+          <input type="date" name="dateTo" id="dateTo" required>
+        </label>
+      </div>
+    </div>
 
-    <label>Bus Station:
-      <input type="text" name="busStation">
-    </label>
-
-    <label>Hotel:
-      <input type="text" name="hotel">
-    </label>
-
-    <label>Date From:
-      <input type="date" name="dateFrom" id="dateFrom" required>
-    </label>
-
-    <label>Date To:
-      <input type="date" name="dateTo" id="dateTo" required>
-    </label>
-
-    <button type="submit">Submit</button>
+    <button type="submit" class="submit-btn">Submit</button>
   </form>
 
   <p id="response"></p>
 
   <script>
+    const body = document.body;
+    const toggleBtn = document.querySelector('.toggle-mode');
+
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+    });
+
     const form = document.getElementById('travelForm');
     const response = document.getElementById('response');
-
-    // Prevent Date To from being earlier than Date From
     const dateFromInput = document.getElementById('dateFrom');
     const dateToInput = document.getElementById('dateTo');
 
+    // Make sure Date To >= Date From
     dateFromInput.addEventListener('change', () => {
       dateToInput.min = dateFromInput.value;
     });
