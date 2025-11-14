@@ -91,7 +91,7 @@
       const data = Object.fromEntries(formData.entries());
 
       try {
-        const res = await fetch('https://dtts.app.n8n.cloud/webhook-test/eb47b7df-7354-44c2-a4fc-2499d1b37704', {
+        const res = await fetch('https://dtts.app.n8n.cloud/webhook/eb47b7df-7354-44c2-a4fc-2499d1b37704', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
