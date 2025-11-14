@@ -1,0 +1,54 @@
+<form id="travelForm">
+  <label>Destination</label>
+  <input type="text" id="destination" required>
+
+  <label>Date From</label>
+  <input type="date" id="dateFrom" required>
+
+  <label>Date To</label>
+  <input type="date" id="dateTo" required>
+
+  <label>Airport</label>
+  <input type="text" id="airport">
+
+  <label>Train Station</label>
+  <input type="text" id="trainStation">
+
+  <label>Bus Station</label>
+  <input type="text" id="busStation">
+
+  <label>Hotel</label>
+  <input type="text" id="hotel">
+
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+document.getElementById("travelForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const payload = {
+    destination: document.getElementById("destination").value,
+    dateFrom: document.getElementById("dateFrom").value,
+    dateTo: document.getElementById("dateTo").value,
+    airport: document.getElementById("airport").value,
+    trainStation: document.getElementById("trainStation").value,
+    busStation: document.getElementById("busStation").value,
+    hotel: document.getElementById("hotel").value
+  };
+
+  const webhookUrl = "YOUR_N8N_PRODUCTION_WEBHOOK_URL_HERE";
+
+  const res = await fetch(webhookUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  if (res.ok) {
+    alert("Travel data sent successfully!");
+  } else {
+    alert("Error sending data.");
+  }
+});
+</script>
