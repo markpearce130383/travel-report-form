@@ -77,4 +77,173 @@
     }
 
     .row {
-      display:
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      background: var(--input-bg);
+      color: var(--text-color);
+    }
+
+    button.submit-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: var(--btn-bg);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button.submit-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    #response {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    @media(max-width: 500px){
+      .row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <h2>Travel Risk Report</h2>
+
+  <div class="toggle-container">
+    <button class="toggle-mode">Toggle Dark Mode</button>
+  </div>
+
+  <form id="travelForm">
+    <!-- Location Info Section -->
+    <div class="section">
+      <h3>Location Info</h3>
+      <div class="input-group">
+        <label for="destination">Destination:</label>
+        <input type="text" id="destination" name="destination" required>
+      </div>
+      <div class="input-group">
+        <label for="recipientEmail">Email Address:</label>
+        <input type="email" id="recipientEmail" name="recipientEmail" required>
+      </div>
+    </div>
+
+    <!-- Transport Section -->
+    <div class="section">
+      <h3>Transport</h3>
+      <div class="row">
+        <div class="input-group">
+          <label for="airport">Airport:</label>
+          <input type="text" id="airport" name="airport">
+        </div>
+        <div class="input-group">
+          <label for="trainStation">Train Station:</label>
+          <input type="text" id="trainStation" name="trainStation">
+        </div>
+        <div class="input-group">
+          <label for="busStation">Bus Station:</label>
+          <input type="text" id="busStation" name="busStation">
+        </div>
+      </div>
+    </div>
+
+    <!-- Accommodation Section -->
+    <div class="section">
+      <h3>Accommodation</h3>
+      <div class="input-group">
+        <label for="hotel">Hotel:</label>
+        <input type="text" id="hotel" name="hotel">
+      </div>
+    </div>
+
+    <!-- Travel Dates Section -->
+    <div class="section">
+      <h3>Travel Dates</h3>
+      <div class="row">
+        <div class="input-group">
+          <label for="dateFrom">Date From:</label>
+          <input type="date" id="dateFrom" name="dateFrom" required>
+        </div>
+        <div class="input-group">
+          <label for="dateTo">Date To:</label>
+          <input type="date" id="dateTo" name="dateTo" required>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    const body = document.body;
+    const toggleBtn = document.querySelector('.toggle-mode');
+
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+    });
+
+    const form = document.getElementById('travelForm');
+    const response = document.getElementById('response');
+    const dateFromInput = document.getElementById('dateFrom');
+    const dateToInput = document.getElementById('dateTo');
+
+    dateFromInput.addEventListener('change', () => {
+      dateToInput.min = dateFromInput.value;
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      response.style.color = '#333';
+      response.textContent = 'Submitting...';
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch('https://dtts.app.n8n.cloud/webhook/eb47b7df-7354-44c2-a4fc-2499d1b37704', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          response.style.color = 'green';
+          response.textContent = 'Workflow triggered successfully!';
+          form.reset();
+        } else {
+          response.style.color = 'red';
+          response.textContent = 'Error triggering workflow.';
+        }
+      } catch (err) {
+        console.error(err);
+        response.style.color = 'red';
+        response.textContent = 'Error triggering workflow.';
+      }
+    });
+  </script>
+</body>
+</html>
