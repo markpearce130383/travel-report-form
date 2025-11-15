@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Risk Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    form { max-width: 400px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
+    label { font-weight: bold; }
+    input, button { padding: 8px; font-size: 14px; }
+    button { cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<h2>Travel Risk Form</h2>
+
+<form id="travelForm">
+  <label>Destination</label>
+  <input type="text" id="destination" required>
+
+  <label>Date From</label>
+  <input type="date" id="dateFrom" required>
+
+  <label>Date To</label>
+  <input type="date" id="dateTo" required>
+
+  <label>Airport</label>
+  <input type="text" id="airport">
+
+  <label>Train Station</label>
+  <input type="text" id="trainStation">
+
+  <label>Bus Station</label>
+  <input type="text" id="busStation">
+
+  <label>Hotel</label>
+  <input type="text" id="hotel">
+
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+document.getElementById("travelForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const payload = {
+    destination: document.getElementById("destination").value,
+    dateFrom: document.getElementById("dateFrom").value,
+    dateTo: document.getElementById("dateTo").value,
+    airport: document.getElementById("airport").value,
+    trainStation: document.getElementById("trainStation").value,
+    busStation: document.getElementById("busStation").value,
+    hotel: document.getElementById("hotel").value
+  };
+
+  // Replace these URLs with your actual n8n webhook URLs
+  const webhook1 = "YOUR_FIRST_N8N_WEBHOOK_URL";
+  const webhook2 = "YOUR_SECOND_N8N_WEBHOOK_URL";
+
+  try {
+    // Send both webhooks in parallel
+    const [res1, res2] = await Promise.all([
+      fetch(webhook1, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }),
+      fetch(webhook2, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+    ]);
+
+    if (res1.ok && res2.ok) {
+      alert("Travel data sent successfully to both webhooks!");
+      // Optionally, clear the form
+      document.getElementById("travelForm").reset();
+    } else {
+      alert("Error sending data to one or both webhooks.");
+      console.error("Webhook1 response:", res1.status, res1.statusText);
+      console.error("Webhook2 response:", res2.status, res2.statusText);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Network error while sending data.");
+  }
+});
+</script>
+
+</body>
+</html>
