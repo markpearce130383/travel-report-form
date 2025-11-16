@@ -1,94 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel Risk Form</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    form { max-width: 400px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
-    label { font-weight: bold; }
-    input, button { padding: 8px; font-size: 14px; }
-    button { cursor: pointer; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Risk Report Form</title>
+  <style>
+    /* Root variables for light & dark mode */
+    :root {
+      --bg-color: #f7f7f7;
+      --card-bg: #fff;
+      --text-color: #333;
+      --input-bg: #fff;
+      --input-border: #ccc;
+      --btn-bg: #2ecc71;
+      --btn-hover: #27ae60;
+    }
+    body.dark-mode {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #eee;
+      --input-bg: #2c2c2c;
+      --input-border: #555;
+      --btn-bg: #4caf50;
+      --btn-hover: #43a047;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+   .toggle-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button.toggle-mode {
+      background: #444;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    button.toggle-mode:hover {
+      background: #555;
+    }
+
+    form {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+
+   .section {
+      margin-bottom: 20px;
+    }
+
+   .section h3 {
+      margin-bottom: 10px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 4px;
+    }
+
+   .row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+   .row label {
+      flex: 1 1 45%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      background: var(--input-bg);
+      color: var(--text-color);
+      transition: border 0.3s, background 0.3s, color 0.3s;
+    }
+    input:focus {
+      border-color: var(--btn-bg);
+      outline: none;
+    }
+
+    button.submit-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: var(--btn-bg);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button.submit-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    #response {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    /* Small screens adjustments */
+    @media(max-width: 500px){
+     .row label {
+        flex: 1 1 100%;
+      }
+    }
+    
+    /* Removed: The brittle positional CSS fix that forced display: block!important
+       The structural change below corrects the layout properly. */
+
+  </style>
 </head>
 <body>
 
-<h2>Travel Risk Form</h2>
+  <h2 id="travel-risk-report">Travel Risk Report</h2>
 
-<form id="travelForm">
-  <label>Destination</label>
-  <input type="text" id="destination" required>
+  <div class="toggle-container">
+    <button class="toggle-mode">Toggle Dark Mode</button>
+  </div>
 
-  <label>Date From</label>
-  <input type="date" id="dateFrom" required>
+  <form id="travelForm">
+        <div class="section">
+      <h3 id="location-info">Location Info</h3>
+      
+      <div class="row">
+        <label>Destination:
+          <input type="text" name="destination" required="">
+        </label>
+      
+        <label>Email Address:
+          <input type="email" name="recipientEmail" required="">
+        </label>
+      </div>
+      
+    </div>
 
-  <label>Date To</label>
-  <input type="date" id="dateTo" required>
+        <div class="section">
+      <h3 id="transport">Transport</h3>
+      <div class="row">
+        <label>Airport:
+          <input type="text" name="airport">
+        </label>
+        <label>Train Station:
+          <input type="text" name="trainStation">
+        </label>
+        <label>Bus Station:
+          <input type="text" name="busStation">
+        </label>
+      </div>
+    </div>
 
-  <label>Airport</label>
-  <input type="text" id="airport">
+        <div class="section">
+      <h3 id="accommodation">Accommodation</h3>
+      <label>Hotel:
+        <input type="text" name="hotel">
+      </label>
+    </div>
 
-  <label>Train Station</label>
-  <input type="text" id="trainStation">
+        <div class="section">
+      <h3 id="travel-dates">Travel Dates</h3>
+      <div class="row">
+        <label>Date From:
+          <input type="date" name="dateFrom" id="dateFrom" required="">
+        </label>
+        <label>Date To:
+          <input type="date" name="dateTo" id="dateTo" required="">
+        </label>
+      </div>
+    </div>
 
-  <label>Bus Station</label>
-  <input type="text" id="busStation">
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
 
-  <label>Hotel</label>
-  <input type="text" id="hotel">
+  <p id="response"></p>
 
-  <button type="submit">Submit</button>
-</form>
+  <script>
+    const body = document.body;
+    const toggleBtn = document.querySelector('.toggle-mode');
 
-<script>
-document.getElementById("travelForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+    });
 
-  const payload = {
-    destination: document.getElementById("destination").value,
-    dateFrom: document.getElementById("dateFrom").value,
-    dateTo: document.getElementById("dateTo").value,
-    airport: document.getElementById("airport").value,
-    trainStation: document.getElementById("trainStation").value,
-    busStation: document.getElementById("busStation").value,
-    hotel: document.getElementById("hotel").value
-  };
+    const form = document.getElementById('travelForm');
+    const response = document.getElementById('response');
+    const dateFromInput = document.getElementById('dateFrom');
+    const dateToInput = document.getElementById('dateTo');
 
-  // Replace these URLs with your actual n8n webhook URLs
-  const webhook1 = "YOUR_FIRST_N8N_WEBHOOK_URL";
-  const webhook2 = "YOUR_SECOND_N8N_WEBHOOK_URL";
+    // Make sure Date To >= Date From
+    dateFromInput.addEventListener('change', () => {
+      dateToInput.min = dateFromInput.value;
+    });
 
-  try {
-    // Send both webhooks in parallel
-    const [res1, res2] = await Promise.all([
-      fetch(webhook1, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }),
-      fetch(webhook2, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-    ]);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      response.style.color = '#333';
+      response.textContent = 'Submitting...';
 
-    if (res1.ok && res2.ok) {
-      alert("Travel data sent successfully to both webhooks!");
-      // Optionally, clear the form
-      document.getElementById("travelForm").reset();
-    } else {
-      alert("Error sending data to one or both webhooks.");
-      console.error("Webhook1 response:", res1.status, res1.statusText);
-      console.error("Webhook2 response:", res2.status, res2.statusText);
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Network error while sending data.");
-  }
-});
-</script>
+      // Uses name attributes to automatically collect data (including recipientEmail)
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch('https://dtts.app.n8n.cloud/webhook/eb47b7df-7354-44c2-a4fc-2499d1b37704', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          response.style.color = 'green';
+          response.textContent = 'Workflow triggered successfully!';
+          form.reset();
+        } else {
+          response.style.color = 'red';
+          response.textContent = 'Error triggering workflow.';
+        }
+
+      } catch (err) {
+        console.error(err);
+        response.style.color = 'red';
+        response.textContent = 'Error triggering workflow.';
+      }
+    });
+  </script>
 
 </body>
 </html>
