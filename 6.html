@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Risk Report Form</title>
+  <style>
+    /* GLOBAL BOX SIZING */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Root variables for light & dark mode */
+    :root {
+      --bg-color: #f7f7f7;
+      --card-bg: #fff;
+      --text-color: #333;
+      --input-bg: #fff;
+      --input-border: #ccc;
+      --btn-bg: #2ecc71;
+      --btn-hover: #27ae60;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #eee;
+      --input-bg: #2c2c2c;
+      --input-border: #555;
+      --btn-bg: #4caf50;
+      --btn-hover: #43a047;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .toggle-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button.toggle-mode {
+      background: #444;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    button.toggle-mode:hover {
+      background: #555;
+    }
+
+    form {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      margin-bottom: 10px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 4px;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .row label {
+      flex: 1 1 45%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-color);
+      border-radius: 6px;
+      transition: border 0.3s, background 0.3s, color 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--btn-bg);
+      outline: none;
+    }
+
+    button.submit-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: var(--btn-bg);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button.submit-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    #response {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    @media(max-width: 500px){
+      .row label {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="travel-risk-report">Travel Risk Report</h2>
+
+  <div class="toggle-container">
+    <button class="toggle-mode">Toggle Dark Mode</button>
+  </div>
+
+  <form id="travelForm">
+    <div class="section">
+      <h3 id="location-info">Location Info</h3>
+      
+      <div class="row">
+        <label>Destinations (comma-separated):
+          <input type="text" name="destination" placeholder="e.g. London, Paris, Rome" required>
+        </label>
+      
+        <label>Email Address:
+          <input type="email" name="recipientEmail" required>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3 id="transport">Transport</h3>
+      <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">Separate multiple locations with commas.</p>
+      <div class="row">
+        <label>Airports:
+          <input type="text" name="airport" placeholder="e.g. LHR, CDG">
+        </label>
+        <label>Train Stations:
+          <input type="text" name="trainStation" placeholder="e.g. Paddington, Gare du Nord">
+        </label>
+        <label>Bus Stations:
+          <input type="text" name="busStation" placeholder="e.g. Victoria Coach Station">
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3 id="accommodation">Accommodation</h3>
+      <label>Hotels (comma-separated):
+        <input type="text" name="hotel" placeholder="e.g. The Ritz (London), Le Meurice (Paris)">
+      </label>
+    </div>
+
+    <div class="section">
+      <h3 id="travel-dates">Travel Dates</h3>
+      <div class="row">
+        <label>Date From:
+          <input type="date" name="dateFrom" id="dateFrom" required>
+        </label>
+        <label>Date To:
+          <input type="date" name="dateTo" id="dateTo" required>
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    const body = document.body;
+    const toggleBtn = document.querySelector('.toggle-mode');
+
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+    });
+
+    const form = document.getElementById('travelForm');
+    const response = document.getElementById('response');
+    const dateFromInput = document.getElementById('dateFrom');
+    const dateToInput = document.getElementById('dateTo');
+
+    dateFromInput.addEventListener('change', () => {
+      dateToInput.min = dateFromInput.value;
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      response.style.color = '#333';
+      response.textContent = 'Submitting...';
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        // Ensure this matches your n8n Webhook URL
+        const res = await fetch('https://dtts.app.n8n.cloud/webhook/eb47b7df-7354-44c2-a4fc-2499d1b37704', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          response.style.color = 'green';
+          response.textContent = 'Workflow triggered successfully!';
+          form.reset();
+        } else {
+          response.style.color = 'red';
+          response.textContent = 'Error triggering workflow.';
+        }
+
+      } catch (err) {
+        console.error(err);
+        response.style.color = 'red';
+        response.textContent = 'Error triggering workflow.';
+      }
+    });
+  </script>
+</body>
+</html>
